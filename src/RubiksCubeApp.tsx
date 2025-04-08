@@ -4,18 +4,18 @@ import RubiksCube from './utils/cube'
 
 const RubiksCubeApp = () => {
   const [cube] = useState(new RubiksCube())
-  const [cubeState, setCubeState] = useState(cube.getState())
+  const [cubeState, setCubeState] = useState(cube.getFacesState())
   const [moveHistory, setMoveHistory] = useState<string[]>([])
 
   const handleMove = (move: string) => {
     cube.applyMove(move)
-    setCubeState(cube.getState())
+    setCubeState(cube.getFacesState())
     setMoveHistory([...moveHistory, move])
   }
 
   const handleReset = () => {
     cube.reset()
-    setCubeState(cube.getState())
+    setCubeState(cube.getFacesState())
     setMoveHistory([])
   }
 
