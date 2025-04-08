@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Color, Face } from './utils/types'
 import RubiksCube from './utils/cube'
+import ButtonComponent from './components/ButtonComponent'
 
 const RubiksCubeApp = () => {
   const [cube] = useState(new RubiksCube())
@@ -60,56 +61,10 @@ const RubiksCubeApp = () => {
     )
   }
 
-  // Render the move buttons
-  const renderMoveButtons = () => {
-    const moves = [
-      { notation: 'F', description: 'Front Face Clockwise' },
-      { notation: "F'", description: 'Front Face Counter Clockwise' },
-      { notation: 'R', description: 'Right Face Clockwise' },
-      { notation: "R'", description: 'Right Face Counter Clockwise' },
-      { notation: 'U', description: 'Up Face Clockwise' },
-      { notation: "U'", description: 'Up Face Counter Clockwise' },
-      { notation: 'B', description: 'Back Face Clockwise' },
-      { notation: "B'", description: 'Back Face Counter Clockwise' },
-      { notation: 'L', description: 'Left Face Clockwise' },
-      { notation: "L'", description: 'Left Face Counter Clockwise' },
-      { notation: 'D', description: 'Down Face Clockwise' },
-      { notation: "D'", description: 'Down Face Counter Clockwise' },
-    ]
-
-    return (
-      <div
-        style={{
-          margin: '20px 0',
-          display: 'grid',
-          gridTemplateRows: 'auto auto',
-          gap: '5px',
-        }}
-      >
-        {moves.map((move) => (
-          <button
-            key={move.notation}
-            onClick={() => handleMove(move.notation)}
-            style={{
-              padding: '8px 12px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              backgroundColor: '#f0f0f0',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          >
-            {move.description}
-          </button>
-        ))}
-      </div>
-    )
-  }
-
   return (
     <div
       style={{
-        maxWidth: '800px',
+        maxWidth: '1000px',
         margin: '0 auto',
         padding: '20px',
         fontFamily: 'Arial, sans-serif',
@@ -146,7 +101,7 @@ const RubiksCubeApp = () => {
 
       <div style={{ marginTop: '20px' }}>
         <h2>Controls</h2>
-        {renderMoveButtons()}
+        <ButtonComponent onMove={handleMove} />
 
         <button
           onClick={handleReset}
