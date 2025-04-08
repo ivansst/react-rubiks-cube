@@ -1,30 +1,22 @@
 import React from 'react'
 
-interface ButtonComponentProps {
+type MoveButtonProps = {
   onMove: (move: string) => void
 }
 
-const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
-  const moveTypes = ['F', 'R', 'U', 'B', 'L', 'D'] as const
+const MoveControls = ({ onMove }: MoveButtonProps) => {
+  // Standard Rubik's cube move notation
+  const moves = ['F', 'R', 'U', 'B', 'L', 'D'] as const
 
-  const moveNames: Record<(typeof moveTypes)[number], string> = {
+  // Map move letters to their full names
+  const moveDescriptions = {
     F: 'Front',
     B: 'Back',
     L: 'Left',
     R: 'Right',
     U: 'Up',
     D: 'Down',
-  }
-
-  const moves = moveTypes
-    .map((move) => [
-      { notation: move, description: `${moveNames[move]} Face Clockwise` },
-      {
-        notation: `${move}'`,
-        description: `${moveNames[move]} Face Counter Clockwise`,
-      },
-    ])
-    .flat()
+  } as const
 
   const buttonStyle = {
     padding: '12px 16px',
@@ -39,7 +31,9 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
 
   return (
     <div>
+      {/* Move buttons in a 2x6 grid */}
       <div
+        className="move-buttons"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(6, 70px)',
@@ -49,12 +43,15 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
           marginBottom: '30px',
         }}
       >
-        {moveTypes.map((move) => (
+        {/* Regular moves (clockwise) */}
+        {moves.map((move) => (
           <button key={move} style={buttonStyle} onClick={() => onMove(move)}>
             {move}
           </button>
         ))}
-        {moveTypes.map((move) => (
+
+        {/* Counter-clockwise moves */}
+        {moves.map((move) => (
           <button
             key={`${move}'`}
             style={buttonStyle}
@@ -65,7 +62,9 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
         ))}
       </div>
 
+      {/* Help section explaining the moves */}
       <div
+        className="move-help"
         style={{
           backgroundColor: '#f8f9fa',
           padding: '20px',
@@ -73,8 +72,9 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
           marginTop: '20px',
         }}
       >
-        <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Move Legend</h3>
+        <h3 style={{ marginTop: 0, marginBottom: '15px' }}>How to Move</h3>
         <div
+          className="move-explanations"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
@@ -82,24 +82,38 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
           }}
         >
           {moves.map((move) => (
-            <div
-              key={move.notation}
-              style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
-            >
-              <span
-                style={{
-                  fontWeight: 'bold',
-                  minWidth: '30px',
-                  padding: '4px 8px',
-                  backgroundColor: '#e9ecef',
-                  borderRadius: '4px',
-                  textAlign: 'center',
-                }}
+            <React.Fragment key={move}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
               >
-                {move.notation}
-              </span>
-              <span>{move.description}</span>
-            </div>
+                <code
+                  style={{
+                    fontWeight: 'bold',
+                    padding: '4px 8px',
+                    backgroundColor: '#e9ecef',
+                    borderRadius: '4px',
+                  }}
+                >
+                  {move}
+                </code>
+                <span>{moveDescriptions[move]} face clockwise</span>
+              </div>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+              >
+                <code
+                  style={{
+                    fontWeight: 'bold',
+                    padding: '4px 8px',
+                    backgroundColor: '#e9ecef',
+                    borderRadius: '4px',
+                  }}
+                >
+                  {`${move}'`}
+                </code>
+                <span>{moveDescriptions[move]} face counter-clockwise</span>
+              </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
@@ -107,4 +121,4 @@ const ButtonComponent: React.FC<ButtonComponentProps> = ({ onMove }) => {
   )
 }
 
-export default ButtonComponent
+export default MoveControls

@@ -1,27 +1,29 @@
 import { useState } from 'react'
 import { Color, Face } from './utils/types'
 import RubiksCube from './utils/cube'
-import ButtonComponent from './components/ButtonComponent'
+import MoveControls from './components/ButtonComponent'
 
 const RubiksCubeApp = () => {
   const [cube] = useState(new RubiksCube())
   const [cubeState, setCubeState] = useState(cube.getFacesState())
   const [moveHistory, setMoveHistory] = useState<string[]>([])
 
+  // Apply a move and update the cube state
   const handleMove = (move: string) => {
     cube.applyMove(move)
     setCubeState(cube.getFacesState())
-    setMoveHistory([...moveHistory, move])
+    setMoveHistory((prev) => [...prev, move])
   }
 
+  // Reset the cube to its initial state
   const handleReset = () => {
     cube.reset()
     setCubeState(cube.getFacesState())
     setMoveHistory([])
   }
 
-  // Color mapping for visual display
-  const colorMap: Record<Color, string> = {
+  // Colors for each face
+  const faceColors = {
     [Color.W]: '#FFFFFF', // White
     [Color.O]: '#FFA500', // Orange
     [Color.G]: '#00FF00', // Green
@@ -30,39 +32,38 @@ const RubiksCubeApp = () => {
     [Color.Y]: '#FFFF00', // Yellow
   }
 
-  const renderPiece = (color: Color, size: number = 30) => {
-    return (
-      <div
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          backgroundColor: colorMap[color],
-          border: '1px solid #000',
-          display: 'inline-block',
-        }}
-      />
-    )
-  }
+  // Render a single square of the cube
+  const renderSquare = (color: Color, size: number = 30) => (
+    <div
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        backgroundColor: faceColors[color],
+        border: '1px solid #000',
+        display: 'inline-block',
+      }}
+    />
+  )
 
-  const renderFace = (face: Face, label: string, size: number = 30) => {
-    return (
-      <div style={{ margin: '10px', textAlign: 'center' }}>
-        <div style={{ marginBottom: '5px' }}>{label}</div>
-        <div>
-          {face.map((row, rowIndex) => (
-            <div key={rowIndex} style={{ display: 'flex' }}>
-              {row.map((color, colIndex) => (
-                <div key={colIndex}>{renderPiece(color, size)}</div>
-              ))}
-            </div>
-          ))}
-        </div>
+  // Render a full face of the cube
+  const renderFace = (face: Face, label: string, size: number = 30) => (
+    <div style={{ margin: '10px', textAlign: 'center' }}>
+      <div style={{ marginBottom: '5px' }}>{label}</div>
+      <div>
+        {face.map((row, i) => (
+          <div key={i} style={{ display: 'flex' }}>
+            {row.map((color, j) => (
+              <div key={j}>{renderSquare(color, size)}</div>
+            ))}
+          </div>
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
 
   return (
     <div
+      className="cube-app"
       style={{
         maxWidth: '1000px',
         margin: '0 auto',
@@ -75,17 +76,19 @@ const RubiksCubeApp = () => {
       </h1>
 
       <div
+        className="cube-display"
         style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
+        {/* Up face */}
         <div style={{ width: 'fit-content' }}>
           {renderFace(cubeState.U, 'Up (U)')}
         </div>
 
-        {/* Middle row: Left, Front, Right, Back */}
+        {/* Middle layer */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {renderFace(cubeState.L, 'Left (L)')}
           {renderFace(cubeState.F, 'Front (F)')}
@@ -99,9 +102,9 @@ const RubiksCubeApp = () => {
         </div>
       </div>
 
-      <div style={{ marginTop: '20px' }}>
+      <div className="controls" style={{ marginTop: '20px' }}>
         <h2>Controls</h2>
-        <ButtonComponent onMove={handleMove} />
+        <MoveControls onMove={handleMove} />
 
         <button
           onClick={handleReset}
@@ -120,7 +123,7 @@ const RubiksCubeApp = () => {
         </button>
       </div>
 
-      <div style={{ marginTop: '20px' }}>
+      <div className="history" style={{ marginTop: '20px' }}>
         <h2>Move History</h2>
         <div
           style={{
