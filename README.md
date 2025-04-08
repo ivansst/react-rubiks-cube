@@ -1,54 +1,108 @@
-# React + TypeScript + Vite
+# Rubik's Cube Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web-based Rubik's Cube simulator built with React, TypeScript, and Vite. This interactive application allows users to manipulate a virtual Rubik's Cube using standard cube notation.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 3D Rubik's Cube visualization using 2D face representations
+- Standard Rubik's Cube moves (F, F', R, R', U, U', B, B', L, L', D, D')
+- Move history tracking
+- Reset functionality
+- Intuitive user interface
+- Hot reloading during development
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Before running this project, make sure you have:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js (v14 or higher)
+- npm (comes with Node.js)
+
+## Installation
+
+1.  Clone or download the project.
+
+2.  Navigate to the project directory in your terminal.
+
+3.  Run `npm install` to install dependencies.
+
+## Running the Application
+
+### Development Mode
+
+To run the application in development mode with hot reloading:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This will start the development server, typically at `http://localhost:5173`. The page will automatically reload when you make changes to the code.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Production Mode
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+To build and run the application in production mode:
+
+```bash
+npm start
 ```
+
+This command will:
+
+1. Build the application for production (optimized and minified)
+2. Start a local server to serve the production build
+
+Alternatively, you can:
+
+- Build only: `npm run build`
+- Preview the production build: `npm run preview`
+
+## How to Use
+
+1. **Basic Controls**:
+
+   - Use the buttons labeled with cube notations to rotate faces
+   - Each face can be rotated clockwise or counter-clockwise
+   - The move history is displayed at the bottom of the page
+
+2. **Cube Notation**:
+
+   - F: Front face clockwise
+   - F': Front face counter-clockwise
+   - R: Right face clockwise
+   - R': Right face counter-clockwise
+   - U: Up face clockwise
+   - U': Up face counter-clockwise
+   - B: Back face clockwise
+   - B': Back face counter-clockwise
+   - L: Left face clockwise
+   - L': Left face counter-clockwise
+   - D: Down face clockwise
+   - D': Down face counter-clockwise
+
+3. **Reset**:
+   - Click the "Reset Cube" button to return the cube to its solved state
+   - This will also clear the move history
+
+## Project Structure
+
+```
+rubiks-cube-frontend/
+├── src/
+│   ├── utils/
+│   │   ├── cube.ts       # Cube logic and state management
+│   │   └── types.ts      # TypeScript type definitions
+│   ├── RubiksCubeApp.tsx # Main application component
+│   └── main.tsx         # Application entry point
+├── public/              # Static assets
+└── package.json        # Project dependencies and scripts
+```
+
+## Development
+
+The project uses:
+
+- React for the UI
+- TypeScript for type safety
+- Vite for fast development and optimized builds
+- ESLint for code linting
+- Prettier for code formatting
